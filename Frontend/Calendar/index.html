@@ -1,212 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Asset Allocation Planner</title>
-
-<style>
-body { font-family: Arial; background:#f4f6f8; padding:20px }
-table { border-collapse: collapse; width:100%; background:#fff }
-th,td { border:1px solid #ccc; padding:6px; text-align:center; font-size:13px }
-th { background:#eee }
-
-.status-cell { cursor:pointer }
-.range-selected { background:#cfe2ff !important; outline:2px solid #007bff }
-
-.booked { background:#90EE90 }
-.conflict { background:#ffb6c1 }
-
-.modal {
-  display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,.5)
-}
-.modal-box {
-  background:#fff; width:420px; padding:20px;
-  margin:10% auto; border-radius:6px
-}
-.btn { padding:8px 14px; cursor:pointer }
-.btn-primary { background:#007bff; color:#fff }
-.btn-secondary { background:#6c757d; color:#fff }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Rental Calendar</title>
+  <link rel="stylesheet" href="./index.css">
 </head>
-
 <body>
+  <div class="header">
+    <div class="header-content">
+      <div class="header-title">
+        <h1>Vehicle Rental Calendar</h1>
+        <p>Manage equipment bookings and availability</p>
+      </div>
+      <div class="header-actions">
+        <div class="search-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search vehicles...">
+        </div>
+        <button class="btn" onclick="exportData()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Export
+        </button>
+      </div>
+    </div>
+  </div>
 
-<h3>Asset Availability</h3>
+  <div class="main-content">
+    <div class="calendar-controls">
+      <div class="controls-info">
+        Click and drag to select dates • Drag over selected dates to deselect
+      </div>
+      <div class="month-nav">
+        <button class="nav-btn" onclick="prevMonth()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div class="current-month" id="currentMonth"></div>
+        <button class="nav-btn" onclick="nextMonth()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-<table id="calendar">
-<thead>
-<tr>
-<th>Asset</th>
-<th colspan="30">January 2026</th>
-</tr>
-<tr>
-<th></th>
-<script>
-for(let i=1;i<=30;i++) document.write(`<th>${i}</th>`)
-</script>
-</tr>
-</thead>
-<tbody id="body"></tbody>
-</table>
+    <div class="calendar-container">
+      <div class="table-wrapper">
+        <table id="calendarTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
 
-<br>
-<button class="btn btn-primary" onclick="openAllocation()">Allocate</button>
+    <div class="legend">
+      <div class="legend-items">
+        <div class="legend-item">
+          <div class="legend-box legend-booked"></div>
+          <span>Booked</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-box legend-available"></div>
+          <span>Available</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-box legend-weekend"></div>
+          <span>Weekend</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
-<div class="modal-box">
-<h3>Allocate Asset</h3>
-
-<p><b>Asset:</b> <span id="mAsset"></span></p>
-<p><b>Range:</b> <span id="mRange"></span></p>
-
-<label>Location</label>
-<input id="mLocation" style="width:100%">
-
-<label>Status</label>
-<select id="mStatus" style="width:100%">
-<option value="BOOKED">Booked</option>
-<option value="RESERVED">Reserved</option>
-</select>
-
-<label>Notes</label>
-<textarea id="mNotes" style="width:100%"></textarea>
-
-<br><br>
-<button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="saveAllocation()">Save</button>
-</div>
-</div>
-
-<script>
-/* ---------------- DATA ---------------- */
-const assets = [
-  { name:"JCB 14T – MH12ED6756", serial:"JCB001" },
-  { name:"JCB 14T – MH12XY8976", serial:"JCB002" }
-];
-
-let allocations = [];
-
-/* ------------- SELECTION STATE ------------- */
-let startDay=null, endDay=null, selectedAsset=null;
-
-/* ------------- RENDER ---------------- */
-function render(){
-  const body=document.getElementById("body");
-  body.innerHTML="";
-
-  assets.forEach(a=>{
-    let tr=document.createElement("tr");
-    tr.innerHTML=`<td>${a.name}</td>`;
-
-    for(let d=1;d<=30;d++){
-      let td=document.createElement("td");
-      td.className="status-cell";
-      td.dataset.asset=a.serial;
-      td.dataset.day=d;
-
-      let alloc=findAllocation(a.serial,d);
-      if(alloc){
-        td.classList.add("booked");
-        td.title=alloc.location;
-      }
-
-      td.onclick=(e)=>cellClick(e,a.serial,d);
-      tr.appendChild(td);
-    }
-    body.appendChild(tr);
-  });
-}
-
-function findAllocation(asset,day){
-  return allocations.find(a =>
-    a.assetSerial===asset &&
-    day>=a.startDay &&
-    day<=a.endDay
-  );
-}
-
-/* ------------- SELECTION ---------------- */
-function cellClick(e,asset,day){
-  if(!startDay){
-    startDay=day;
-    selectedAsset=asset;
-    highlight(asset,day,day);
-    return;
-  }
-
-  if(e.shiftKey && asset===selectedAsset){
-    endDay=day;
-    highlight(asset,startDay,endDay);
-  } else {
-    clearSelection();
-    startDay=day;
-    selectedAsset=asset;
-    highlight(asset,day,day);
-  }
-}
-
-function highlight(asset,s,e){
-  clearSelection(false);
-  let min=Math.min(s,e), max=Math.max(s,e);
-  document.querySelectorAll(`td[data-asset="${asset}"]`)
-    .forEach(td=>{
-      let d=+td.dataset.day;
-      if(d>=min && d<=max) td.classList.add("range-selected");
-    });
-}
-
-function clearSelection(reset=true){
-  document.querySelectorAll(".range-selected")
-    .forEach(c=>c.classList.remove("range-selected"));
-  if(reset){ startDay=endDay=selectedAsset=null; }
-}
-
-/* ------------- MODAL ---------------- */
-function openAllocation(){
-  if(!startDay||!endDay) return alert("Select date range first");
-  document.getElementById("modal").style.display="block";
-  document.getElementById("mAsset").textContent=selectedAsset;
-  document.getElementById("mRange").textContent=`${startDay} - ${endDay}`;
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display="none";
-}
-
-/* ------------- SAVE ---------------- */
-function saveAllocation(){
-  let location=mLocation.value.trim();
-  if(!location) return alert("Location required");
-
-  let min=Math.min(startDay,endDay);
-  let max=Math.max(startDay,endDay);
-
-  // conflict check
-  let conflict=allocations.some(a =>
-    a.assetSerial===selectedAsset &&
-    !(max<a.startDay || min>a.endDay)
-  );
-  if(conflict) return alert("Conflict: Asset already booked");
-
-  allocations.push({
-    assetSerial:selectedAsset,
-    startDay:min,
-    endDay:max,
-    location,
-    status:mStatus.value,
-    notes:mNotes.value
-  });
-
-  closeModal();
-  clearSelection();
-  render();
-}
-
-/* INIT */
-render();
-</script>
-
+  <script src="./index.js"></script>
 </body>
 </html>
