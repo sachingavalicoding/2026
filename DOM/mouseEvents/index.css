@@ -1,0 +1,26 @@
+.calendar {
+  width: 420px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  user-select: none;
+}
+
+.day {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  cursor: pointer;
+}
+
+.day.selected {
+  background: #cfe5ff;
+}
+
+.day.start,
+.day.end {
+  background: #007bff;
+  color: #fff;
+}
