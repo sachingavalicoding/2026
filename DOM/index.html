@@ -1,30 +1,412 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOM</title>
-    <link rel="stylesheet" href="./index.css">
-</head>
-<body>
-    <table id="table">
-        <thead class="table-header">
-            <tr>
-                <th>Rank</th>
-                <th>Name</th>
-                <th>Points</th>
-                <th>Team</th>
-            </tr>
-        </thead>
-        <tbody class="table-body">
-            <tr>
-                <td>1</td>
-                <td>Sally</td>
-                <td>84,000</td>
-                <td>Students</td>
-            </tr>
-        </tbody>
-    </table>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Rental Calendar</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="header-left">
+          <h1>Vehicle Rental Calendar</h1>
+          <p>Manage equipment bookings and availability</p>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <input type="search" placeholder="Search vehicles..." />
+          </div>
+          <button class="export-btn">
+            <span>⬇</span>
+            Export
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Instruction Bar -->
+    <div class="instruction-bar">
+      <div class="instruction-text">
+        Click and drag to select dates • Drag over selected dates to deselect
+      </div>
+      <div class="month-navigation">
+        <button class="month-nav-btn prev">‹</button>
+        <span class="current-month"></span>
+        <button class="month-nav-btn nexts">›</button>
+      </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar-container">
+      <!-- Calendar Header -->
+      <div class="calendar-header">
+        <div class="header-equipment">Equipment</div>
+
+        <div class="day-header">
+          <span class="day-header-label">Wed</span>
+          <span class="day-header-date">1</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Thu</span>
+          <span class="day-header-date">2</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Fri</span>
+          <span class="day-header-date">3</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sat</span>
+          <span class="day-header-date">4</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sun</span>
+          <span class="day-header-date">5</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Mon</span>
+          <span class="day-header-date">6</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Tue</span>
+          <span class="day-header-date">7</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Wed</span>
+          <span class="day-header-date">8</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Thu</span>
+          <span class="day-header-date">9</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Fri</span>
+          <span class="day-header-date">10</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sat</span>
+          <span class="day-header-date">11</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sun</span>
+          <span class="day-header-date">12</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Mon</span>
+          <span class="day-header-date">13</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Tue</span>
+          <span class="day-header-date">14</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Wed</span>
+          <span class="day-header-date">15</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Thu</span>
+          <span class="day-header-date">16</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Fri</span>
+          <span class="day-header-date">17</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sat</span>
+          <span class="day-header-date">18</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sun</span>
+          <span class="day-header-date">19</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Mon</span>
+          <span class="day-header-date">20</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Tue</span>
+          <span class="day-header-date">21</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Wed</span>
+          <span class="day-header-date">22</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Thu</span>
+          <span class="day-header-date">23</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Fri</span>
+          <span class="day-header-date">24</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sat</span>
+          <span class="day-header-date">25</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Sun</span>
+          <span class="day-header-date">26</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Mon</span>
+          <span class="day-header-date">27</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Tue</span>
+          <span class="day-header-date">28</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Wed</span>
+          <span class="day-header-date">29</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Thu</span>
+          <span class="day-header-date">30</span>
+        </div>
+        <div class="day-header">
+          <span class="day-header-label">Fri</span>
+          <span class="day-header-date">31</span>
+        </div>
+
+        <div class="header-booked">Days Booked</div>
+      </div>
+
+      <!-- Equipment Rows -->
+      <div class="equipment-row">
+        <div class="equipment-info">
+          <div class="equipment-name">JCB 3DX Backhoe Loader</div>
+          <div class="equipment-model">MH-12-AB-1234</div>
+        </div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="booked-count">0</div>
+      </div>
+
+      <div class="equipment-row">
+        <div class="equipment-info">
+          <div class="equipment-name">Tata Hitachi ZX200 Excavator</div>
+          <div class="equipment-model">MH-12-CD-5678</div>
+        </div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="booked-count">0</div>
+      </div>
+
+      <div class="equipment-row">
+        <div class="equipment-info">
+          <div class="equipment-name">Mahindra Earth Master</div>
+          <div class="equipment-model">MH-12-EF-9012</div>
+        </div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell selected"></div>
+        <div class="day-cell weekend selected"></div>
+        <div class="day-cell weekend selected"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell booked"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell selected"></div>
+        <div class="day-cell selected"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell booked"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="booked-count">7</div>
+      </div>
+
+      <div class="equipment-row">
+        <div class="equipment-info">
+          <div class="equipment-name">JCB JS130 Excavator</div>
+          <div class="equipment-model">MH-12-GH-3456</div>
+        </div>
+        <div class="day-cell"></div>
+        <div class="day-cell booked"></div>
+        <div class="day-cell booked"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell selected"></div>
+        <div class="day-cell selected"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="booked-count">4</div>
+      </div>
+
+      <div class="equipment-row">
+        <div class="equipment-info">
+          <div class="equipment-name">CAT 320D Excavator</div>
+          <div class="equipment-model">MH-12-IJ-7890</div>
+        </div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell booked"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell booked"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="booked-count">2</div>
+      </div>
+
+      <div class="equipment-row">
+        <div class="equipment-info">
+          <div class="equipment-name">Hyundai R140 Excavator</div>
+          <div class="equipment-model">MH-12-KL-2345</div>
+        </div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell weekend"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="day-cell"></div>
+        <div class="booked-count">0</div>
+      </div>
+    </div>
     <script src="./index.js"></script>
-</body>
+  </body>
 </html>
